@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">SWAHILI PLAYER APP</string>
     <string name="textview">TextView</string>
+    <string name="play">play</string>
+    <string name="button">Button</string>
+    <string name="prev">prev</string>
+    <string name="next" />
+    <string name="nextp">next</string>
+    <string name="previ">Button</string>
+    <string name="stop">Button</string>
+    <string name="inext">Button</string>
 </resources>

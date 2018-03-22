@@ -9,11 +9,10 @@ android:background="@drawable/fg"
 
     <ListView
         android:id="@+id/lvp"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_width="match_parent"
+        android:layout_height="434dp"
 
-        android:layout_alignParentTop="true" />
+        />
+
 </RelativeLayout>
 
