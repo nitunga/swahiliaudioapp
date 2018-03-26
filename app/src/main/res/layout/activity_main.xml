@@ -7,12 +7,35 @@ android:background="@drawable/fg"
     tools:context="com.example.elxonnyagwaru.swahiliplayerapp.MainActivity">
 
 
-    <ListView
-        android:id="@+id/lvp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="434dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
-        />
+        <SearchView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/textcolor"
+            android:queryHint="@string/search"
+            />
+
+
+
+        <ListView
+            android:id="@+id/lvp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="3dp" />
+
+
+    </LinearLayout>
+
 
 </RelativeLayout>
 

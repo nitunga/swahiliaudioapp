@@ -9,4 +9,6 @@
     <string name="previ">Button</string>
     <string name="stop">Button</string>
     <string name="inext">Button</string>
+    <string name="search">search</string>
+
 </resources>
