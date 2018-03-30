@@ -15,15 +15,6 @@ android:background="@drawable/fg"
         android:layout_alignParentTop="true"
         android:orientation="vertical">
 
-        <SearchView
-            android:id="@+id/search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/textcolor"
-            android:queryHint="@string/search"
-            />
-
-
 
         <ListView
             android:id="@+id/lvp"

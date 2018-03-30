@@ -1,15 +1,18 @@
 package com.example.elxonnyagwaru.swahiliplayerapp;
 
 import android.annotation.SuppressLint;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.SeekBar;
-
+import java.lang.*;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -19,10 +22,10 @@ public class Player extends AppCompatActivity implements View.OnClickListener   
      ArrayList<File> mysongs;
      SeekBar sb;
      Uri u;
-
      Thread update;
-     Button  btplay,btnext,btprev;
+     Button  btplay,btnext,btprev,shuffle;
      int position;
+     Intent intent;
 
 
     @SuppressLint("DefaultLocale")
@@ -31,10 +34,11 @@ public class Player extends AppCompatActivity implements View.OnClickListener   
         super.onCreate(savedInstanceState);
          setContentView(R.layout.activity_player);
 
-        // myplayer=findViewById(R.id.myplayer);
+
          btplay = findViewById(R.id.play);
          btprev = findViewById(R.id.prev);
          btnext = findViewById(R.id.next);
+         shuffle = findViewById(R.id.shuffle);
 
 
 
@@ -69,7 +73,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener   
         };
 
 
-
+         shuffle.setOnClickListener(this);
          btplay.setOnClickListener(this);
          btnext.setOnClickListener(this);
          btprev.setOnClickListener(this);
@@ -83,10 +87,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener   
         Bundle  b= i.getExtras();
         mysongs =(ArrayList) b.getParcelableArrayList("songlist");
         int position = b.getInt("pos",0);
-        u = Uri.parse(mysongs.get(position).toString());
+         u = Uri.parse(mysongs.get(position).toString());
         mp=MediaPlayer.create(getApplicationContext(),u);
         mp.start();
-        mp.setLooping(true);
         sb.setMax(mp.getDuration());
         update.start();
 
@@ -125,12 +128,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener   
                 if(mp.isPlaying()){
                     btplay.setText("play");
                    mp.pause();
-                    mp.setLooping(true);
+
                 }
                 else {
                     btplay.setText("stop");
                     mp.start();
-                    mp.setLooping(true);
+
                 }
 
                 break;
@@ -152,6 +155,14 @@ public class Player extends AppCompatActivity implements View.OnClickListener   
                     mp=MediaPlayer.create(getApplicationContext(),u);
                     mp.start();
                     sb.setMax(mp.getDuration());
+                break;
+
+            case R.id.shuffle:
+                if(mp.isPlaying()){
+                    mp.setLooping(true);
+                }
+                else mp.stop();
+
                 break;
 
 

@@ -1,62 +1,60 @@
 package com.example.elxonnyagwaru.swahiliplayerapp;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-
-import static java.util.Locale.ROOT;
 
 public class MainActivity extends AppCompatActivity {
     ListView lv;
     String[] items;
-
-    ArrayList<String> mysongs;
+    ArrayList<File> mysongs;
     ArrayAdapter<String> adp;
-    SearchView sv;
+    SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lv=findViewById(R.id.lvp);
-        sv=findViewById(R.id.search);
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String text) {
-                return false;
-            }
+         searchView=findViewById(R.id.menu_search);
 
-            @Override
-            public boolean onQueryTextChange(String text) {
-                adp.getFilter().filter(text);
-                return false;
-            }
-        });
+         mysongs=findSongs(Environment.getExternalStorageDirectory());
 
-        final ArrayList<File> mysongs=findSongs(Environment.getExternalStorageDirectory());
-        //Collections.sort(mysongs);
         items = new String[ mysongs.size()];
-        // ArrayList<File> songs=findSongs(Environment.getRootDirectory());
+
         for (int i=0;i<mysongs.size();i++){
           //  toast(mysongs.get(i).getName().toString());
             items[i] = mysongs.get(i).getName().toString().replace(".mp3","").replace(".aac","").replace(".m4a","");
         }
-        ArrayAdapter<String> adp = new ArrayAdapter<String>(getApplication(),R.layout.songlist,R.id.textView,items);
+        adp = new ArrayAdapter<String>(getApplication(),R.layout.songlist,R.id.textView,items);
 
         lv.setAdapter(adp);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-              startActivity(new Intent(getApplicationContext(),Player.class).putExtra("pos",position).putExtra("songlist",mysongs));
+
+                    startActivity(new Intent(getApplicationContext( ), Player.class).putExtra("pos", position).putExtra("songlist", mysongs));
+
+                    Intent myintent=new Intent(view.getContext(),Player.class);
+                    startActivityForResult(myintent,position);
+
+
+
 
             }
         });
@@ -84,4 +82,47 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+////handling searchView in a actionbar//////
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.menu_search,menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this,Player.class)));
+        searchView.setQueryHint(getResources().getString(R.string.search_hint));
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener( ) {
+
+            @Override
+            public boolean onQueryTextSubmit(String text) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String text) {
+                adp.getFilter().filter(text);
+
+
+                if (TextUtils.isEmpty(text)) {
+                    lv.clearTextFilter();
+                }
+                else {
+                    lv.setFilterText(text);
+                }
+
+                return true;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
 }
+
+
+
